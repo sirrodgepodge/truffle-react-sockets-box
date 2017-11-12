@@ -88,9 +88,7 @@ export default class PostsList extends Component {
                           transition: `
                             box-shadow .1s ease-in-out,
                             opacity .1s ease-in-out
-                            ${showButton ? '' : `
-                              , visibility 0s .1s
-                            `}
+                            ${showButton ? '' : ', visibility 0s .1s'}
                           `
                         }}
                         onClick={this.props.setUpdating.bind(null, i)}
