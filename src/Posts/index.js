@@ -28,6 +28,7 @@ export default class PostsList extends Component {
               {this.props.posts.map((post, i) => {
                 const isUpdating = typeof this.props.updatingIndex === 'number';
                 const isUpdatingThis = isUpdating && this.props.updatingIndex === i;
+                const showButton = (!isUpdating || isUpdatingThis);
 
                 return (
                   <fieldset
@@ -70,9 +71,6 @@ export default class PostsList extends Component {
                       height: '38px',
                       width: '100%'
                     }}>
-                    {
-                      (!isUpdating || isUpdatingThis)
-                      &&
                       <button
                         className={`pure-button${isUpdatingThis ? ' pure-button-active' : ''}`}
                         style={{
@@ -84,13 +82,21 @@ export default class PostsList extends Component {
                           borderTopRightRadius: '0px',
                           borderBottomLeftRadius: '4px',
                           borderBottomRightRadius: '4px',
-                          userSelect: isUpdatingThis ? 'none' : 'initial'
+                          userSelect: isUpdatingThis ? 'none' : 'initial',
+                          opacity: showButton ? 1 : 0,
+                          visibility: showButton ? 'visible' : 'hidden',
+                          transition: `
+                            box-shadow .1s ease-in-out,
+                            opacity .1s ease-in-out
+                            ${showButton ? '' : `
+                              , visibility 0s .1s
+                            `}
+                          `
                         }}
                         onClick={this.props.setUpdating.bind(null, i)}
                       >
                         {isUpdatingThis ? 'Updating...' : 'Update'}
                        </button>
-                    }
                     </div>
                   </fieldset>
                 )

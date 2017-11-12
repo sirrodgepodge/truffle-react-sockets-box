@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { clone } from 'lodash';
 import { addPost, updatePost, getPosts, setUpdating } from '../postActions';
 
 
@@ -22,12 +23,14 @@ export default class PostForm extends Component {
       });
     }
     if (typeof this.props.updatingIndex === 'number' && typeof nextProps.updatingIndex !== 'number') {
-      this.setState({
-        author: '',
-        content: ''
-      });
+      this.clearState();
     }
   }
+
+  clearState = () => this.setState({
+    author: '',
+    content: ''
+  });
 
   componentDidMount() {
     this.props.getPosts();
@@ -43,10 +46,11 @@ export default class PostForm extends Component {
     if (this.state.content.length < 2) return alert('Please fill out some content.');
 
     if (typeof this.props.updatingIndex === 'number') {
-      this.props.updatePost(this.state, this.props.updatingIndex);
+      this.props.updatePost(clone(this.state), this.props.updatingIndex);
     } else {
-      this.props.addPost(this.state);
+      this.props.addPost(clone(this.state));
     }
+    this.clearState();
   }
 
   render() {
@@ -94,6 +98,7 @@ export default class PostForm extends Component {
             <button
               className="pure-button pure-button-secondary"
               onClick={this.props.setUpdating}
+              style={{ marginLeft: '20px' }}
             >
               Cancel
             </button>
