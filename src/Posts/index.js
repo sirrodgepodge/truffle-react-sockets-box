@@ -32,15 +32,15 @@ export default class PostsList extends Component {
 
                 return (
                   <fieldset
-                    className="pure-u-1-3 pure-group"
+                    className="pure-u-1-4 pure-group"
                     style={{
                       display: 'inline-flex',
-                      width: 'calc(33.3333% - 20px)',
+                      width: 'calc(25% - 20px)',
                       justifyContent: 'space-between',
                       flexDirection: 'column',
                       boxSizing: 'border-box',
                       marginTop: '20px',
-                      marginLeft: i % 3 === 0 ? 0 : '20px',
+                      marginLeft: i % 4 === 0 ? 0 : '20px',
                       padding: 0,
                       border: '1px solid #ccc',
                       borderRadius: '4px'
