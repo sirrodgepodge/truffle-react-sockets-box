@@ -3,7 +3,7 @@ import { twitterPostInstancePromise } from '../../lib/web3';
 import {
   ADD_POST,
   UPDATE_POST,
-} from '../../../src/posts/ui/postsForm/PostActionTypes';
+} from '../../../src/Posts/postActionTypes';
 
 export default socket => {
   twitterPostInstancePromise.then(twitterPostInstance => {

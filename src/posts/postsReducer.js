@@ -3,7 +3,7 @@ import {
   UPDATE_POST,
   POSTS_LOADED,
   SET_UPDATING,
-} from './ui/postsForm/PostActionTypes';
+} from './postActionTypes';
 
 
 const initialState = {
@@ -17,7 +17,7 @@ export default function postsReducer(state = initialState, { type, payload }) {
     }
 
     case ADD_POST: {
-      return { posts: state.posts.concat(payload.post) };
+      return { posts: [payload.post].concat(state.posts) };
     }
 
     case UPDATE_POST: {

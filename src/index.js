@@ -7,8 +7,8 @@ import getWeb3 from './util/web3/getWeb3';
 
 // Layouts
 import App from './App';
-import Home from './layouts/home/Home';
-import PostsList from './posts/ui/postsList/PostsList';
+import Home from './Home';
+import Posts from './Posts';
 
 // Redux Store
 import store from './store';
@@ -30,7 +30,7 @@ ReactDOM.render((
       <Router history={history}>
         <Route path="/" component={App}>
           <IndexRoute component={Home} />
-          <Route path="postslist" component={PostsList} />
+          <Route path="postslist" component={Posts} />
         </Route>
       </Router>
     </Provider>

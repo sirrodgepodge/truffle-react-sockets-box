@@ -1,10 +1,10 @@
-import TwitterPostContract from '../../../../build/contracts/TwitterPost.json';
+import TwitterPostContract from '../../build/contracts/TwitterPost.json';
 import contract from 'truffle-contract';
-import getWeb3 from '../../../util/web3/getWeb3';
+import getWeb3 from '../util/web3/getWeb3';
 import {
   POSTS_LOADED,
   SET_UPDATING
-} from './PostActionTypes';
+} from './postActionTypes';
 
 
 function postsLoaded(posts) {

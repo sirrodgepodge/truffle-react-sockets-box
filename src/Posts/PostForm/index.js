@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addPost, updatePost, getPosts, setUpdating } from './PostActions';
+import { addPost, updatePost, getPosts, setUpdating } from '../postActions';
 
 
 @connect(({ posts: postsState }) => ({
@@ -53,31 +53,35 @@ export default class PostForm extends Component {
     const isUpdating = typeof this.props.updatingIndex === 'number';
 
     return(
-      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
+      <form
+        className="pure-form pure-form-stacked"
+        onSubmit={this.handleSubmit}
+      >
         <fieldset>
-
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Author"
-            value={this.state.author}
-            onChange={this.onAuthorChange}
-          />
-          <span className="pure-form-message">This is a required field.</span>
-
-          <br />
-
-          <label htmlFor="name">Content</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Content"
-            value={this.state.content}
-            onChange={this.onContentChange}
-          />
-          <span className="pure-form-message">This is a required field.</span>
-
+          <h3>
+            Make a Post!
+          </h3>
+          <fieldset
+            className="pure-group"
+          >
+            <input
+              id="name"
+              type="text"
+              className="pure-input-1-2"
+              placeholder="Author"
+              value={this.state.author}
+              onChange={this.onAuthorChange}
+            />
+            <textarea
+              id="name"
+              type="text"
+              className="pure-input-1-2"
+              placeholder="Textareas work too"
+              value={this.state.content}
+              onChange={this.onContentChange}
+              style={{ resize: 'none' }}
+            />
+          </fieldset>
           <button
             type="submit"
             className="pure-button pure-button-primary"
