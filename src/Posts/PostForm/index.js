@@ -63,7 +63,7 @@ export default class PostForm extends Component {
       >
         <fieldset>
           <h3>
-            Make a Post!
+            {isUpdating ? 'Update' : 'Make'} a Post!
           </h3>
           <fieldset
             className="pure-group"
