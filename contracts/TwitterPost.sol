@@ -13,7 +13,7 @@ contract TwitterPost is Killable {
     bytes32 content;
   }
 
-  function addPost(bytes32 _author, bytes32 _content) payable returns (bool success) {
+  function addPost(bytes32 _author, bytes32 _content) public payable returns (bool success) {
     Post memory newPost;
     newPost.author = _author;
     newPost.content = _content;
@@ -23,7 +23,7 @@ contract TwitterPost is Killable {
     return true;
   }
 
-  function updatePost(bytes32 _author, bytes32 _content, uint8 _index) payable returns (bool success) {
+  function updatePost(bytes32 _author, bytes32 _content, uint8 _index) public payable returns (bool success) {
     if(_index > posts.length - 1) {
       revert(); // handle non-existent index
     }

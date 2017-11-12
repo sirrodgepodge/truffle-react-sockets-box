@@ -5,6 +5,8 @@ import {
   UPDATE_POST,
 } from '../../../src/Posts/postActionTypes';
 
+const nullCharacterRegex = /\0/g;
+
 export default socket => {
   twitterPostInstancePromise.then(twitterPostInstance => {
     twitterPostInstance.allEvents((err, result) => {
@@ -15,8 +17,8 @@ export default socket => {
           case ADD_POST: {
             action.payload = {
               post: {
-                author: web3.toAscii(args.author),
-                content: web3.toAscii(args.content),
+                author: web3.toAscii(args.author).replace(nullCharacterRegex, ''),
+                content: web3.toAscii(args.content).replace(nullCharacterRegex, ''),
               },
             };
             break;
@@ -24,8 +26,8 @@ export default socket => {
           case UPDATE_POST: {
             action.payload = {
               post: {
-                author: web3.toAscii(args.author),
-                content: web3.toAscii(args.content),
+                author: web3.toAscii(args.author).replace(nullCharacterRegex, ''),
+                content: web3.toAscii(args.content).replace(nullCharacterRegex, ''),
               },
               index: args.index.toNumber(),
             };
