@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import getWeb3 from './util/web3/getWeb3';
+import getWeb3 from './web3/getWeb3';
 
 // Layouts
 import App from './App';
@@ -20,9 +20,8 @@ socketsInit(store.dispatch);
 // Initialize react-router-redux.
 const history = syncHistoryWithStore(browserHistory, store);
 
-// Initialize web3 and set in Redux.
 getWeb3
-  .then(results => console.log('Web3 initialized!'))
+  .then(() => console.log('Web3 initialized!'))
   .catch(() => console.log('Error in web3 initialization.'));
 
 ReactDOM.render((

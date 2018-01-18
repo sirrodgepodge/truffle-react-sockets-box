@@ -1,6 +1,6 @@
 import TwitterPostContract from '../../build/contracts/TwitterPost.json';
 import contract from 'truffle-contract';
-import getWeb3 from '../util/web3/getWeb3';
+import getWeb3 from '../web3/getWeb3';
 import {
   POSTS_LOADED,
   SET_UPDATING
@@ -26,83 +26,68 @@ export function setUpdating(index) {
 }
 
 // caching
-let twitterPostInstance;
+let twitterPostContract;
 
-// using truffle-contract we create the twitterPostInstance object.
-function getTwitterPostInstance() {
-  if (twitterPostInstance) return Promise.resolve();
+// using truffle-contract we create the twitterPostContract object.
+async function setTwitterPostContract() {
+  if (twitterPostContract) return Promise.resolve();
 
-  return getWeb3.then(web3 => {
-    const twitterPostContract = contract(TwitterPostContract);
-    twitterPostContract.setProvider(web3.currentProvider);
+  const web3 = await getWeb3;
 
-    return twitterPostContract.deployed().then(instance => {
-      twitterPostInstance = instance;
-    });
-  });
+  const twitterPostContractApi = contract(TwitterPostContract);
+  twitterPostContractApi.setProvider(web3.currentProvider);
+
+  twitterPostContract = await twitterPostContractApi.deployed();
 }
 
 
 // caching
 let coinbaseAddress;
 
-function getCoinbase() {
+async function setCoinbase() {
   if (coinbaseAddress) return Promise.resolve();
 
-  return getWeb3.then(web3 => {
-    return new Promise((resolve, reject) => {
-      return web3.eth.getCoinbase((error, coinbase) => {
-        if (error) return reject(error);
-        coinbaseAddress = coinbase;
-        resolve(coinbase);
-      });
+  const web3 = await getWeb3;
+
+  return new Promise((resolve, reject) =>
+    web3.eth.getCoinbase((err, coinbase) => {
+      if (err) return reject(err);
+      coinbaseAddress = coinbase;
+      resolve();
     })
-  });
+  );
 }
 
 
 export function getPosts() {
-  return function asyncUpdatePost(dispatch) {
-    Promise.all([getTwitterPostInstance(), getCoinbase()])
-      .then(() =>
-        // Attempt to login user.
-        twitterPostInstance.getPosts().then((res) => {
-          const [authors, contents] = res;
-          const posts = authors.map((author, i) => ({
-            author: window.web3.toAscii(author),
-            content: window.web3.toAscii(contents[i])
-          }));
-          dispatch(postsLoaded(posts));
-        })
-        .catch(error => {
-          console.error(error);
-        })
-      );
+  return async function asyncUpdatePost(dispatch) {
+    await Promise.all([setTwitterPostContract(), setCoinbase()]);
+
+    // Attempt to login user.
+    const [authors, contents] = await twitterPostContract.getPosts()
+    const posts = authors.map((author, i) => ({
+      author: window.web3.toAscii(author),
+      content: window.web3.toAscii(contents[i])
+    }));
+
+    dispatch(postsLoaded(posts));
   }
 }
 
 export function addPost({ author, content }) {
-  return function asyncUpdatePost(dispatch) {
-    Promise.all([getTwitterPostInstance(), getCoinbase()])
-      .then(() =>
-        // Attempt to login user.
-        twitterPostInstance.addPost(author, content, { from: coinbaseAddress })
-          .catch(error => {
-            console.error(error);
-          })
-      );
+  return async function asyncUpdatePost(dispatch) {
+    await Promise.all([setTwitterPostContract(), setCoinbase()]);
+
+    twitterPostContract.addPost(author, content, { from: coinbaseAddress })
+      .catch(console.error)
   }
 }
 
 export function updatePost({ author, content }, index) {
-  return function asyncUpdatePost(dispatch) {
-    Promise.all([getTwitterPostInstance(), getCoinbase()])
-      .then(() =>
-        // Attempt to login user.
-        twitterPostInstance.updatePost(author, content, index, { from: coinbaseAddress })
-          .catch(error => {
-            console.error(error);
-          })
-      );
+  return async function asyncUpdatePost(dispatch) {
+    await Promise.all([setTwitterPostContract(), setCoinbase()]);
+
+    twitterPostContract.updatePost(author, content, index, { from: coinbaseAddress })
+      .catch(console.error);
   }
 }
